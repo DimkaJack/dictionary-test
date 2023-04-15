@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+    nginx:
+        container_name: ${APP_NAME}-nginx
+        build:
+            context: ./.docker/nginx
+        ports:
+            - '${APP_PORT:-8080}:80'
+        restart: always
+        volumes:
+            - ./.docker/nginx:/etc/nginx/conf.d:ro
+            - ./.docker/log/nginx:/var/log/nginx:rw
+            - .:/app:delegated
+        networks:
+            - dictionary-test
+
+    php:
+        container_name: ${APP_NAME}-php
+        build:
+            context: ./.docker/php
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        environment:
+            - PHP_XDEBUG_CLIENT_HOST=host.docker.internal
+        volumes:
+            - '.:/app'
+        networks:
+            - dictionary-test
+
+    database:
+        container_name: ${APP_NAME}-db
+        image: mysql:5.7
+        volumes:
+            - dbdata:/var/lib/mysql
+        environment:
+            - "MYSQL_DATABASE=dictionary"
+            - "MYSQL_USER=dictionary"
+            - "MYSQL_PASSWORD=secret"
+            - "MYSQL_ROOT_PASSWORD=secret"
+        ports:
+            - 33061:3306
+        networks:
+            - dictionary-test
+
+volumes:
+    dbdata:
+
+networks:
+    dictionary-test:
+        driver: bridge
