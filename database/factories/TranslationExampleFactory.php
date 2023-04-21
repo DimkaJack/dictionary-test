@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Translation>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TranslationExample>
  */
-class TranslationFactory extends Factory
+class TranslationExampleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class TranslationFactory extends Factory
     public function definition(): array
     {
         return [
-            'value' => $this->faker->word,
+            'description' => $this->faker->sentence,
         ];
     }
 }

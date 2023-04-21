@@ -23,4 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/dictionary', GetDictionaryController::class);
 Route::get('/categories', GetCategoriesController::class);
-Route::post('/ru/translate', PostTranslateController::class);
+Route::post('/translate', PostTranslateController::class);
